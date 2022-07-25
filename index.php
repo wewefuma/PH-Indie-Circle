@@ -4,7 +4,9 @@
 // redirect user to login page if they're not logged in
     if (empty($_SESSION['id'])) {
         header('location: login.php');
+        
     }  
+    
 ?>
 
 <!DOCTYPE html>
@@ -224,10 +226,34 @@
                         <div class="card-body text-center ">
                             <img src="img/avatar-dhg.png" alt="img" width="120px" height="120px" class="rounded-circle mt-n5">
                             <h5 class="card-title"></h5>
-                            <p class="card-text text-justify mb-2">I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.</p>
+                            <p class="card-text text-justify mb-2">Hmm</p>
                             <ul class="list-unstyled nav justify-content-center">
-                               <a href="#" class="text-dark text-decoration-none"> <li class="nav-item">Friends <br> <strong>12M</strong></li></a>
-                              <a href="#" class="text-dark text-decoration-none"> <li class="nav-item">Enimes <br> <strong>1</strong></li></a> 
+                               <a href="#" class="mr-1 text-dark text-decoration-none"> <li class="nav-item">Followers<br>
+                                <strong>
+                                    
+                                <?php 
+                                $sql = "SELECT * FROM users WHERE username=?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param('s', $_SESSION['username']);
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+                                echo $user['user_followers'];
+                                }
+                                ?>
+                            
+                                </strong></li></a>
+
+                              
+                              <a href="#" class="ml-1 text-dark text-decoration-none"> <li class="nav-item"> Following <br> 
+                              <strong>
+                                
+                              1
+
+
+                              </strong></li></a> 
                             </ul>
                         </div>
                     </div>
