@@ -1,29 +1,30 @@
+<?php include 'controllers/authController.php' ?>
+
+<?php
+// redirect user to login page if they're not logged in
+    session_start();
+    if (empty($_SESSION['id'])) {
+        header('location: login.php');
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-<link rel="stylesheet" href="style.css">
-
-<!------------------LIght BOx for Gallery-------------->
-<link rel="stylesheet" href="lightbox.min.css">
-<script type="text/javascript" src="lightbox-plus-jquery.min.js"></script>
-<!------------------LIght BOx for Gallery-------------->
-
-
-
-
-
-<title>Application</title>
-</head>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+        <link rel="stylesheet" href="style.css">
+        <!------------------LIght BOx for Gallery-------------->
+        <link rel="stylesheet" href="lightbox.min.css">
+        <script type="text/javascript" src="lightbox-plus-jquery.min.js"></script>
+        <!------------------LIght BOx for Gallery-------------->
+        <title>Application</title>
+        </head>
 <body>
-
-
     <!-------------------------------NAvigation Starts------------------>
-
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color:#3097D1">
             <a href="index.php" class="navbar-brand"><img src="img/brand-white.png" alt="logo" class="img-fluid" width="80px" height="100px"></a>
     
