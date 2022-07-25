@@ -2,7 +2,6 @@
 
 <?php
 // redirect user to login page if they're not logged in
-    session_start();
     if (empty($_SESSION['id'])) {
         header('location: login.php');
 }
