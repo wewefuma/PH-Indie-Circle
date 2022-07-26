@@ -224,9 +224,71 @@
                     <div class="card card-left1 mb-4" >
                         <img src="img/photo-1455448972184-de647495d428.jpg" alt="" class="card-img-top img-fluid">
                         <div class="card-body text-center ">
-                            <img src="img/avatar-dhg.png" alt="img" width="120px" height="120px" class="rounded-circle mt-n5">
+                            <?php
+                                
+                                $sql = "SELECT * From users WHERE id = ".$_SESSION['id'];
+                                $stmt = $conn->prepare($sql); 
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                 
+                                while($user = mysqli_fetch_array($result))
+                                {
+
+                                    echo '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
+                                    '"alt="Profile" width="120px" height="120px" class="rounded-circle mt-n5">';
+                                        
+                                }
+                                    
+                                $stmt->close();
+                                }
+                                
+        
+                            ?>
                             <h5 class="card-title"></h5>
-                            <p class="card-text text-justify mb-2">Hmm</p>
+                            <a class="card-text text-center text-uppercase font-weight-bold mb-2" href="profile.php">
+                            <?php 
+                            $sql = "SELECT username FROM users WHERE id=".$_SESSION['id'];
+                            $stmt = $conn->prepare($sql);
+                            if($stmt->execute())
+                            {
+
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+
+                                if($user)
+                                {
+                                    echo $user['username'];
+                                    $stmt->close();
+                                }
+                                
+                            }
+                            ?>
+                            </a>
+                            <p class="card-text text-center mb-2">
+                            <?php 
+                            $sql = "SELECT bio FROM users WHERE id=".$_SESSION['id'];
+                            $stmt = $conn->prepare($sql);
+                            if($stmt->execute())
+                            {
+
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+
+                                if($user)
+                                {
+                                    echo nl2br($user['bio']);
+                                    $stmt->close();
+                                }
+                                
+                            }
+                            ?>
+
+
+
+                            </p>
                             <ul class="list-unstyled nav justify-content-center">
                                <a href="#" class="mr-1 text-dark text-decoration-none"> <li class="nav-item">Followers<br>
                                 <strong>
@@ -241,6 +303,7 @@
                                 
                                 $user = $result->fetch_assoc();
                                 echo $user['user_followers'];
+                                $stmt->close();
                                 }
                                 ?>
                             
@@ -250,8 +313,19 @@
                               <a href="#" class="ml-1 text-dark text-decoration-none"> <li class="nav-item"> Following <br> 
                               <strong>
                                 
-                              1
-
+                              <?php 
+                                $sql = "SELECT user_following FROM users WHERE username=?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param('s', $_SESSION['username']);
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+                                echo $user['user_following'];
+                                $stmt->close();
+                                }
+                              ?>
 
                               </strong></li></a> 
                             </ul>
@@ -260,14 +334,58 @@
 
                     <div class="card shadow-sm card-left2 mb-4">
                         <div class="card-body">
-                                <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1">Edit</a></small></h5>
+                                <h5 class="mb-3 card-title">About <small><a href="editprofile.php" class="ml-1">Edit</a></small></h5>
 
-                                <p class="card-text"> <i class="fas fa-calendar-week mr-2"></i> Went to <a href="#" class="text-decoration-none">oh canada</a></p>
+                                <p class="card-text"> <i class="fas fa-calendar-week mr-2"></i> Went to <a href="#" class="text-decoration-none">
+                                
+                                <?php 
+                                $sql = "SELECT education_place FROM users WHERE username=?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param('s', $_SESSION['username']);
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+                                echo $user['education_place'];
+                                $stmt->close();
+                                }
+                                ?>  
+                            
+                                </a></p>
+                                <p class="card-text"> <i class="far fa-building mr-2"></i> Work at <a href="#" class="text-decoration-none">
+                                    
+                                <?php 
+                                $sql = "SELECT work_place FROM users WHERE username=?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param('s', $_SESSION['username']);
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+                                echo $user['work_place'];
+                                $stmt->close();
+                                }
+                                ?>  
+                                
+                                </a></p>
+                                <p class="card-text"> <i class="fas fa-map-marker mr-2"></i> From <a href="#" class="text-decoration-none">
 
-                                <p class="card-text"> <i class="fas fa-user-friends mr-2"></i> Become a friend with <a href="#" class="text-decoration-none">obama</a></p>
-                                <p class="card-text"> <i class="far fa-building mr-2"></i> Work at <a href="#" class="text-decoration-none">Github</a></p>
-                                <p class="card-text"> <i class="fas fa-home mr-2"></i> Live in <a href="#" class="text-decoration-none">San francisco</a></p>
-                                <p class="card-text"> <i class="fas fa-map-marker mr-2"></i> From <a href="#" class="text-decoration-none">Seattle, WA</a></p>
+                                <?php 
+                                $sql = "SELECT city_location FROM users WHERE username=?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param('s', $_SESSION['username']);
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+                                echo $user['city_location'];
+                                $stmt->close();
+                                }
+                                ?>  
+                                </a></p>
                         </div>
                         
                     </div>
@@ -394,46 +512,86 @@
                 <div class="right-column">
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                                <h6 class="card-title ">Likes <a href="#" class="ml-1"><small>.View All</small> </a> </h6>
+                            <h6 class="card-title ">Likes <a href="#modalviewall" data-toggle="modal" class="ml-1"><small>View All</small> </a> </h6>
                                 <div class="row no-gutters d-none d-lg-flex">
-                                    <div class="col-6 p-1">
-                                            <img src="img/avatar-dhg.png" alt="img" width="80px" height="80px" class="rounded-circle mb-4">
-                                            <img src="img/avatar-fat.jpg" alt="img" width="80px" height="80px" class="rounded-circle">
-                                    </div>
+                                    
+                                <?php
+                                
+                                $sql = "SELECT * From users LIMIT 2";
+                                $stmt = $conn->prepare($sql); 
+                                if($stmt->execute())
+                                {
+                                $result = $stmt->get_result();
+                                
+                                while($user = $result->fetch_assoc())
+                                {
+                                    echo '<div class="card-body">',
+                                    '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']),
+                                    '"alt="img" width="80px" height="80px" class="rounded-circle mb-4" style="float:left";>',
+                                    '<h6>', $user['username'], '</h6>',
+                                    '<a href="#" class="btn btn-outline-info btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow </a>', '</div>';
+                                    
 
-                                    <div class="col-6 p-1 text-left">
-                                        <h6>Jacob Thornton @fat</h6>
-                                        <a href="#" class="btn btn-outline-info btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow </a>
-                                        <h6>Mark otto</h6>
-                                        <a href="#" class="btn btn-outline-info  btn-sm"><i class="fas fa-user-friends"></i>Follow </a>
-                                    </div>
+                                }
+                                
+                                $stmt->close();
+                                }
+                                
+                                
+                                
+                                ?>
+                                    
                                 </div>
-                        </div>
+                                    <div class="modal fade" id="modalviewall" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Friends you may know</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            
+                                            <?php
+                                
+                                                $sql = "SELECT * From users WHERE id != ".$_SESSION['id'];
+                                                $stmt = $conn->prepare($sql); 
+                                                if($stmt->execute())
+                                                {
+                                                $result = $stmt->get_result();
+                                                 
+                                                while($user = mysqli_fetch_array($result))
+                                                {
 
-                        <div class="card-footer">
-                            <p class="lead" style="font-size:18px;">Dave really likes these nerds, no one knows why though.</p>
+                                                    echo '<div class="col-sm-6">', '<div class="card">','<div class="card-body">',
+                                                    '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
+                                                    '" alt="img/PICDefault.png" width="80px" height="80px" class="rounded-circle mb-4" style="float:left"/>',
+                                                    '<h6>', $user['username'], '</h6>',
+                                                    '<a href="#" class="btn btn-outline-info btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow </a>', '</div></div></div>';
+                                                        
+                                                }
+                                                    
+                                                $stmt->close();
+                                                }
+                                                
+                        
+                                            ?>
+                                                
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <p>&copy; 2018 Bootstrap
-                                    <a href="#">About</a>
-                                    <a href="#">Help</a>
-                                    <a href="#">Terms</a>
-                                    <a href="#">Privacy</a>
-                                    <a href="#">Cookies</a>
-                                    <a href="#">Ads </a>
-                                    <a href="#">Info</a>
-                                    <a href="#">Brand</a>
-                                    <a href="#">Blog</a>
-                                    <a href="#">Status</a>
-                                    <a href="#">Apps</a>
-                                    <a href="#">Jobs</a>
-                                    <a href="#">Advertise</a>
-                            </p>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
