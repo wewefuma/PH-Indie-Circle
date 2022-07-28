@@ -63,6 +63,7 @@ if (isset($_POST['signup-btn'])) {
 }
 
 
+
 // LOGIN
 if (isset($_POST['login-btn'])) {
     if (empty($_POST['username'])) {
@@ -76,7 +77,7 @@ if (isset($_POST['login-btn'])) {
 
     if (count($errors) === 0) {
         $query = "SELECT * FROM users WHERE username=? OR email=? LIMIT 1";
-        $stmt = $conn->prepare($query);
+        $stmt = $conn->prepare($query);  
         $stmt->bind_param('ss', $username, $password);
 
         if ($stmt->execute()) {
@@ -90,6 +91,8 @@ if (isset($_POST['login-btn'])) {
 
                 $_SESSION['id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['user_followers_names'] = $user['user_followers_names'];
+                $_SESSION['user_following'] = $user['user_following'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['verified'] = $user['verified'];
                 $_SESSION['message'] = 'You are logged in!';
@@ -177,5 +180,11 @@ if(isset($_POST['saveedit-btn']))
         }
         
     }
+
+
+
+
+
+
 
 }

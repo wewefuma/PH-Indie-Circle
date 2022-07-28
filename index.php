@@ -1,4 +1,6 @@
-<?php include 'controllers/authController.php' ?>
+<?php 
+include 'controllers/authController.php';
+?>
 
 <?php
 // redirect user to login page if they're not logged in
@@ -71,7 +73,6 @@
                     ?> 
                     </li>
                     
-                <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
                 <li class="nav-item"><a href="#" class="nav-link d-md-none">logout</a></li>
 
             </ul>
@@ -507,7 +508,7 @@
 
             <br> <br> <br><br> <br> <br>
 <!------------------------Middle column Ends---------------->
-<!---------------------------Statrs Right Columns----------------->
+<!---------------------------Starts Right Columns----------------->
             <div class="col-12 col-lg-3">
                 <div class="right-column">
                     <div class="card shadow-sm mb-4">
@@ -517,28 +518,46 @@
                                     
                                 <?php
                                 
-                                $sql = "SELECT * From users LIMIT 2";
-                                $stmt = $conn->prepare($sql); 
-                                if($stmt->execute())
-                                {
-                                $result = $stmt->get_result();
-                                
-                                while($user = $result->fetch_assoc())
-                                {
-                                    echo '<div class="card-body">',
-                                    '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']),
-                                    '"alt="img" width="80px" height="80px" class="rounded-circle mb-4" style="float:left";>',
-                                    '<h6>', $user['username'], '</h6>',
-                                    '<a href="#" class="btn btn-outline-info btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow </a>', '</div>';
-                                    
+                                    $sql = "SELECT * From users WHERE id !=? ";   
+                                    $stmt = $conn->prepare($sql); 
+                                    $stmt->bind_param("s", $_SESSION['id']);
 
-                                }
+                                    if($stmt->execute())
+                                    {
+                                    $result = $stmt->get_result();
+                                    $followers = json_decode($_SESSION['user_followers_names']);
+                                    $counter = 0;
+                                    while($user = $result->fetch_assoc())
+                                    {
+
+                                        if($counter == 2)
+                                        {
+                                            break;
+
+                                        }
+
+                                        if(in_array($user['username'], $followers))
+                                        {
+                                           
+                                        }
+                                        else
+                                        {
+                                            echo '<div class="card-body"><form action="index.php" method="post">',
+                                            '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']),
+                                            '"alt="img" width="80px" height="80px" class="rounded-circle mb-4" style="float:left";>',
+                                            '<h6>', $user['username'], '</h6>',
+                                            '<button type="submit" class="btn btn-outline-info" name="',$user['username'] ,
+                                            '-button" btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow</button>', '</form></div>';
+                                            $counter++;
+
+                                        }
+                     
+                                    
+                                    }
                                 
-                                $stmt->close();
-                                }
-                                
-                                
-                                
+                                    $stmt->close();
+                                    }
+              
                                 ?>
                                     
                                 </div>
@@ -556,21 +575,59 @@
                                             
                                             <?php
                                 
-                                                $sql = "SELECT * From users WHERE id != ".$_SESSION['id'];
-                                                $stmt = $conn->prepare($sql); 
+                                                $sql = "SELECT * From users WHERE id != ?";
+                                                $stmt = $conn->prepare($sql);
+                                                $stmt->bind_param("s", $_SESSION['id']);
                                                 if($stmt->execute())
                                                 {
                                                 $result = $stmt->get_result();
-                                                 
+                                                $followers = json_decode($_SESSION['user_followers_names']);
                                                 while($user = mysqli_fetch_array($result))
                                                 {
 
-                                                    echo '<div class="col-sm-6">', '<div class="card">','<div class="card-body">',
-                                                    '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
-                                                    '" alt="img/PICDefault.png" width="80px" height="80px" class="rounded-circle mb-4" style="float:left"/>',
-                                                    '<h6>', $user['username'], '</h6>',
-                                                    '<a href="#" class="btn btn-outline-info btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow </a>', '</div></div></div>';
+                                                    if(in_array($user['username'], $followers))
+                                                    {   
+                                                      
+
+                                                    }
+                                                    else
+                                                    {
+                                                        echo '<div class="col-sm-6"><div class="card"><div class="card-body"><form action="index.php" method="post">',
+                                                        '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
+                                                        '" alt="img/PICDefault.png" width="80px" height="80px" class="rounded-circle mb-4" style="float:left"/>',
+                                                        '<h6>', $user['username'], '</h6>',
+                                                        '<button type="submit" class="btn btn-outline-info" name="', $user['username'],'-button" btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow</button>', '</form></div></div></div>';
+
+                                                    }
+                                                   
+
+                                                   
+                                                     ?>   
+                                                        <?php 
+                                                            if(isset($_POST[$user['username'].'-button']))
+                                                            {                  
+                                                                
+                                                             $user_followers = json_decode($_SESSION['user_followers_names']);
+                                                             
+                                                             array_push($user_followers, $user['username']);         
+                                                             
+                                                             $user_followers = json_encode($user_followers);
+                                                             
+
+                                                             $added_user_following = $_SESSION['user_following'] + 1;
+                                                             $query = "UPDATE users SET user_followers_names=?, user_following=? WHERE id=? LIMIT 1";
+                                                             $stmt = $conn->prepare($query);
+                                                             $stmt->bind_param('sss', $user_followers, $added_user_following, $_SESSION['id']);
+                                                             $stmt->execute();
+
+                                                             $_SESSION['user_followers_names'] = $user_followers;
+                                                             $_SESSION['user_following'] = $added_user_following;
+                                                             
+                                                             
+                                                            }
                                                         
+                                                        ?>
+                                                     <?php
                                                 }
                                                     
                                                 $stmt->close();
@@ -578,7 +635,7 @@
                                                 
                         
                                             ?>
-                                                
+                                         
                                         </div>
 
                                     </div>
@@ -595,14 +652,20 @@
                 </div>
             </div>
         </div>
+
+        <script>
+      
+        </script>
 <!------------------------Light BOx OPtions------------->
         <script>
                 lightbox.option({
                 })
         </script>
 <!------------------------Light BOx OPtions------------->
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        
     </body>
 </html>
