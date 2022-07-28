@@ -2,7 +2,6 @@
 
 <?php
 // redirect user to login page if they're not logged in
-    session_start();
     if (empty($_SESSION['id'])) {
         header('location: login.php');
 }
@@ -36,7 +35,39 @@
                     <li class="nav-item"><a href="index.php" class="nav-link active">home</a></li>
                     <li class="nav-item"><a href="profile.php" class="nav-link">profile</a></li>
                     <li class="nav-item"><a href="#modalview" data-toggle="modal" class="nav-link">messages</a></li>
-                    <li class="nav-item"><a href="notification.php" class="nav-link">docs</a></li>
+                    <li class="nav-item dropdown">
+       
+                    <a class="nav-link" href ="#" id = "dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">Notifications<span class="badge badge-light">
+                    <?php 
+                    $sql = "SELECT COUNT(*) as total FROM notifications WHERE notif_active=1;";
+                    $result = mysqli_query($conn, $sql);
+                    $resultCheck = mysqli_num_rows($result);
+                    if($resultCheck > 0)
+                    {
+                        $row = mysqli_fetch_assoc($result);
+                        echo $row['total'];
+                    }
+                    
+                    ?>
+                
+                    </span></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">                
+                    
+                    <?php
+                    $sql = "SELECT * FROM notifications WHERE notif_active=1;";
+                    $result = mysqli_query($conn, $sql);
+                    $resultCheck = mysqli_num_rows($result);
+                    if($resultCheck > 0)
+                    {
+                        while($row = mysqli_fetch_assoc($result))
+                        {
+                        echo '<a class="dropdown-item" href="#"><b class="text-primary">', $row['profile_name'], '</b>', ' ', $row['notif_action'], '</a>';
+                        }
+                    }
+                    ?> 
+                    </li>
+                    
                     <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
                     <li class="nav-item"><a href="#" class="nav-link d-md-none">logout</a></li>
     
