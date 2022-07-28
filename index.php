@@ -30,7 +30,7 @@ include 'controllers/authController.php';
 <body>
     <!-------------------------------NAvigation Starts------------------>
     <nav class="navbar navbar-expand-md navbar-dark mb-4" style="background-color:#3097D1">
-        <a href="index.php" class="navbar-brand"><img src="img/brand-white.png" alt="logo" class="img-fluid" width="80px" height="100px"></a>
+        <a href="index.php" class="navbar-brand"><img src="img/PIClogo.png" alt="logo" class="img-fluid" width="40px" height="40px"></a>
 
         <button class="navbar-toggler" data-toggle="collapse" data-target="#responsive"><span class="navbar-toggler-icon"></span></button>
 
@@ -39,7 +39,6 @@ include 'controllers/authController.php';
             <ul class="navbar-nav mr-auto text-capitalize">
                 <li class="nav-item"><a href="index.php" class="nav-link active">home</a></li>
                 <li class="nav-item"><a href="profile.php" class="nav-link">profile</a></li>
-                <li class="nav-item"><a href="#modalview" class="nav-link" data-toggle="modal">messages</a></li>
                 <li class="nav-item dropdown">
        
                     <a class="nav-link" href ="#" id = "dropdown01" data-toggle="dropdown" aria-haspopup="true"
@@ -77,9 +76,7 @@ include 'controllers/authController.php';
 
             </ul>
 
-            <form action="" class="form-inline ml-auto d-none d-md-block">
-                <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
-            </form>
+            
             <p>&ensp;</p> 
             <a href="logout.php" style="color: white">Logout</a>
         </div>
@@ -640,8 +637,7 @@ include 'controllers/authController.php';
                     
                 });
                 location.reload();
-            
-                
+    
             });
             });
             
