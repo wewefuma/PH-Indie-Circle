@@ -514,7 +514,7 @@ include 'controllers/authController.php';
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
                             <h6 class="card-title ">Likes <a href="#modalviewall" data-toggle="modal" class="ml-1"><small>View All</small> </a> </h6>
-                                <div class="row no-gutters d-none d-lg-flex">
+                                <div class="row no-gutters d-none d-lg-flex" id="avail-users-limited">
                                     
                                 <?php
                                 
@@ -542,12 +542,12 @@ include 'controllers/authController.php';
                                         }
                                         else
                                         {
-                                            echo '<div class="card-body"><form action="index.php" method="post">',
+                                            echo '<div class="card-body">',
                                             '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']),
                                             '"alt="img" width="80px" height="80px" class="rounded-circle mb-4" style="float:left";>',
                                             '<h6>', $user['username'], '</h6>',
-                                            '<button type="submit" class="btn btn-outline-info" name="',$user['username'] ,
-                                            '-button" btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow</button>', '</form></div>';
+                                            '<button class="btn btn-outline-info" id="',$user['username'] ,
+                                            '-button" name="', $user['username'],'"btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow</button>', '</div>';
                                             $counter++;
 
                                         }
@@ -571,7 +571,7 @@ include 'controllers/authController.php';
                                             </button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="row">
+                                        <div class="row" id="avail-users">
                                             
                                             <?php
                                 
@@ -592,42 +592,15 @@ include 'controllers/authController.php';
                                                     }
                                                     else
                                                     {
-                                                        echo '<div class="col-sm-6"><div class="card"><div class="card-body"><form action="index.php" method="post">',
+                                                        echo '<div class="col-sm-6"><div class="card"><div class="card-body">',
                                                         '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
                                                         '" alt="img/PICDefault.png" width="80px" height="80px" class="rounded-circle mb-4" style="float:left"/>',
                                                         '<h6>', $user['username'], '</h6>',
-                                                        '<button type="submit" class="btn btn-outline-info" name="', $user['username'],'-button" btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow</button>', '</form></div></div></div>';
+                                                        '<button class="btn btn-outline-info" id="', $user['username'],'-button" name="', $user['username'],'" btn-sm mb-3"><i class="fas fa-user-friends"></i>Follow</button>', '</div></div></div>';
 
                                                     }
                                                    
-
-                                                   
-                                                     ?>   
-                                                        <?php 
-                                                            if(isset($_POST[$user['username'].'-button']))
-                                                            {                  
-                                                                
-                                                             $user_followers = json_decode($_SESSION['user_followers_names']);
-                                                             
-                                                             array_push($user_followers, $user['username']);         
-                                                             
-                                                             $user_followers = json_encode($user_followers);
-                                                             
-
-                                                             $added_user_following = $_SESSION['user_following'] + 1;
-                                                             $query = "UPDATE users SET user_followers_names=?, user_following=? WHERE id=? LIMIT 1";
-                                                             $stmt = $conn->prepare($query);
-                                                             $stmt->bind_param('sss', $user_followers, $added_user_following, $_SESSION['id']);
-                                                             $stmt->execute();
-
-                                                             $_SESSION['user_followers_names'] = $user_followers;
-                                                             $_SESSION['user_following'] = $added_user_following;
-                                                             
-                                                             
-                                                            }
-                                                        
-                                                        ?>
-                                                     <?php
+                                                 
                                                 }
                                                     
                                                 $stmt->close();
@@ -640,8 +613,7 @@ include 'controllers/authController.php';
 
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>   
                                 </div>
                                 </div>
                             </div>
@@ -654,18 +626,44 @@ include 'controllers/authController.php';
         </div>
 
         <script>
+            
+            $(document).ready(function(){
+            $("#avail-users :button, #avail-users-limited :button").click(function(event){  
+                var btnname = event.target.name;
+
+                $("#avail-users").load("updatefollowdb.php", {  
+                    user: btnname
+                });
+                $("#avail-users").load("updatefollowbox.php", {
+                });
+                $("#avail-users-limited").load("updatefollow.php", {
+                    
+                });
+                location.reload();
+            
+                
+            });
+            });
+            
+    
+            
+
+        </script>
       
-        </script>
-<!------------------------Light BOx OPtions------------->
+
         <script>
-                lightbox.option({
-                })
+
+
+
+
         </script>
-<!------------------------Light BOx OPtions------------->
+
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
         
     </body>
 </html>
