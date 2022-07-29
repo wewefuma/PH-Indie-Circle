@@ -27,7 +27,7 @@
     <?php endif;?>
             <form action="login.php" method="post">
             <div class="form-group">
-                <label>Username or Email</label>
+                <label>Username</label>
                 <input type="text" name="username" class="form-control form-control-lg" value="<?php echo $username; ?>">
             </div>
             <div class="form-group">

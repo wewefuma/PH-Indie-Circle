@@ -21,7 +21,24 @@
         <link rel="stylesheet" href="lightbox.min.css">
         <script type="text/javascript" src="lightbox-plus-jquery.min.js"></script>
         <!------------------LIght BOx for Gallery-------------->
-        <title>Application</title>
+        <title><?php 
+                            $sql = "SELECT username FROM users WHERE id=".$_SESSION['id'];
+                            $stmt = $conn->prepare($sql);
+                            if($stmt->execute())
+                            {
+
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+
+                                if($user)
+                                {
+                                    echo $user['username'];
+                                    $stmt->close();
+                                }
+                                
+                            }
+                            ?></title>
         </head>
 <body>
     <!-------------------------------NAvigation Starts------------------>
@@ -292,15 +309,6 @@
             </div>
 
 
-            <div class="banner-end d-flex justify-content-center align-items-end">
-                <ul class="nav text-light">
-                    <li class="nav-item nav-link active">Photos</li>
-                    <li class="nav-item nav-link">Others</li>
-                    <li class="nav-item nav-link">Anothers</li>
-
-                </ul>
-
-            </div>
 
 
             
