@@ -425,7 +425,7 @@ include 'controllers/authController.php';
                     <div class="card" >
                         <div class="card-header bg-transparent">
                             <div>
-                            <div class="input-group w-100">
+                            <div class="input-group w-100 justify-content-center">
                                     <!-- Button trigger modal -->
                                     <!-- Button trigger modal -->
                                     <div class="button_post">
