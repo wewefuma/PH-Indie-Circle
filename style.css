@@ -92,7 +92,18 @@
 
 /*----------------------------------------------------------------------------------------------------------------------------*/
 
-
+.button_post  {
+    -moz-transform: translate(180px, 0px);
+-webkit-transform: translate(180px, 0px);
+-o-transform: translate(180px, 0px);
+-ms-transform: translate(180px, 0px);
+transform: translate(180px, 0px);
+}
+#center_textarea  {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 
 

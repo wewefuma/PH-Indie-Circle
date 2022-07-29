@@ -424,17 +424,47 @@ include 'controllers/authController.php';
                 <div class="middle-column">
                     <div class="card" >
                         <div class="card-header bg-transparent">
-                            <form class="form-inline">
-                                <div class="input-group w-100">
-                                    <input type="text" name="message" id="message" placeholder="Message" class="form-control form-control-md">
+                            <div>
+                            <div class="input-group w-100">
+                                    <!-- Button trigger modal -->
+                                    <!-- Button trigger modal -->
+                                    <div class="button_post">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        Post something
+                                        </button>
+                                    </div>
 
-                                        <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                        <i class="fas fa-camera"></i>
-                                                </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Post</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
+                                        <div class="modal-body">
+                                        <form action="upload.php" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <textarea id="center_textarea" name="post_summary" cols="65" rows="3"></textarea><br /> 
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="file" id="avatar" name="image" accept="image/png, image/jpeg">
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" name="postSubmit" class="btn btn-primary">Post</button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                            
                         <div class="card-body">
