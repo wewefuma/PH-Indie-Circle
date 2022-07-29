@@ -20,29 +20,12 @@
         <link rel="stylesheet" href="lightbox.min.css">
         <script type="text/javascript" src="lightbox-plus-jquery.min.js"></script>
         <!------------------LIght BOx for Gallery-------------->
-        <title><?php 
-                            $sql = "SELECT username FROM users WHERE id=".$_SESSION['id'];
-                            $stmt = $conn->prepare($sql);
-                            if($stmt->execute())
-                            {
-
-                                $result = $stmt->get_result();
-                                
-                                $user = $result->fetch_assoc();
-
-                                if($user)
-                                {
-                                    echo $user['username'];
-                                    $stmt->close();
-                                }
-                                
-                            }
-                            ?></title>
+        <title>Application</title>
         </head>
 <body>
     <!-------------------------------NAvigation Starts------------------>
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color:#3097D1">
-            <a href="index.php" class="navbar-brand"><img src="img/brand-white.png" alt="logo" class="img-fluid" width="80px" height="100px"></a>
+            <a href="index.php" class="navbar-brand"><img src="img/PIClogo.png" alt="logo" class="img-fluid" width="40px" height="40px"></a>
     
             <button class="navbar-toggler" data-toggle="collapse" data-target="#responsive"><span class="navbar-toggler-icon"></span></button>
     
@@ -51,7 +34,6 @@
                 <ul class="navbar-nav mr-auto text-capitalize">
                     <li class="nav-item"><a href="index.php" class="nav-link active">home</a></li>
                     <li class="nav-item"><a href="profile.php" class="nav-link">profile</a></li>
-                    <li class="nav-item"><a href="#modalview" data-toggle="modal" class="nav-link">messages</a></li>
                     <li class="nav-item dropdown">
        
                     <a class="nav-link" href ="#" id = "dropdown01" data-toggle="dropdown" aria-haspopup="true"
@@ -85,14 +67,12 @@
                     ?> 
                     </li>
                     
-                    <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
+                    
                     <li class="nav-item"><a href="#" class="nav-link d-md-none">logout</a></li>
     
                 </ul>
     
-                <form action="" class="form-inline ml-auto d-none d-md-block">
-                    <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
-                </form>
+                
                 <p>&ensp;</p>
                 <a href="logout.php" style="color: white">Logout</a>
     
@@ -191,7 +171,7 @@
     
                             <a href="#" class="text-decoration-none">
                                     <li class="media hover-media">
-                                       
+                                    
                                             <img src="img/avatar-dhg.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
             
                                             <div class="media-body text-dark">
@@ -333,13 +313,80 @@
 
         <div class="banner">
             <div class="banner-title d-flex flex-column justify-content-center align-items-center">
-                <img src="img/avatar-dhg.png" alt="img" class="rounded-circle" width="80px" height="80px">
-                <h3 class="text-light">Dave Gamache</h3>
-                <p class="text-light">I wish i was a little bit taller, wish i was a baller, wish i had a girl… also.</p>
+                                <?php
+                                
+                                $sql = "SELECT * From users WHERE id = ".$_SESSION['id'];
+                                $stmt = $conn->prepare($sql); 
+                                if($stmt->execute())
+                                {
+                                 $result = $stmt->get_result();
+                                          
+                                 while($user = mysqli_fetch_array($result))
+                                 {
+
+                                 echo '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
+                                 '"alt="Profile" width="80px" height="80px" class="rounded-circle center mr-1 ml-1">';
+                                                  
+                                 }
+                                          
+                                  $stmt->close();
+                                }
+                                          
+                  
+                                ?>
+                           <h3 class="text-light text-center"><?php 
+                            $sql = "SELECT username FROM users WHERE id=".$_SESSION['id'];
+                            $stmt = $conn->prepare($sql);
+                            if($stmt->execute())
+                            {
+
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+
+                                if($user)
+                                {
+                                    echo $user['username'];
+                                    $stmt->close();
+                                }
+                                
+                            }
+                            ?></h3>
+                           <p class="text-light text-center"><?php 
+                            $sql = "SELECT bio FROM users WHERE id=".$_SESSION['id'];
+                            $stmt = $conn->prepare($sql);
+                            if($stmt->execute())
+                            {
+
+                                $result = $stmt->get_result();
+                                
+                                $user = $result->fetch_assoc();
+
+                                if($user)
+                                {
+                                    echo nl2br($user['bio']);
+                                    $stmt->close();
+                                }
+                                
+                            }
+                            ?>
+
+
+
+                            </p></p>
 
             </div>
 
 
+            <div class="banner-end d-flex justify-content-center align-items-end">
+                <ul class="nav text-light">
+                    <li class="nav-item nav-link active">Photos</li>
+                    <li class="nav-item nav-link">Others</li>
+                    <li class="nav-item nav-link">Anothers</li>
+
+                </ul>
+
+            </div>
 
 
             
