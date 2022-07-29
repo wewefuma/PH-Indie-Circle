@@ -16,7 +16,7 @@
     <div class="container">
         <div class="row">
         <div class="col-md-4 offset-md-4 form-wrapper auth">
-            <h3 class="text-center form-title">Register</h3>
+            <h3 class="text-center form-title"><img src="img/PIClogo.png" alt="logo" class="img-fluid" width="80px" height="80px">Register</h3>
             <?php if (count($errors) > 0): ?>
     <div class="alert alert-danger">
         <?php foreach ($errors as $error): ?>

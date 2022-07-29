@@ -378,15 +378,7 @@
             </div>
 
 
-            <div class="banner-end d-flex justify-content-center align-items-end">
-                <ul class="nav text-light">
-                    <li class="nav-item nav-link active">Photos</li>
-                    <li class="nav-item nav-link">Others</li>
-                    <li class="nav-item nav-link">Anothers</li>
-
-                </ul>
-
-            </div>
+    
 
 
             

@@ -30,7 +30,7 @@ include 'controllers/authController.php';
 <body>
     <!-------------------------------NAvigation Starts------------------>
     <nav class="navbar navbar-expand-md navbar-dark mb-4" style="background-color:#3097D1">
-        <a href="index.php" class="navbar-brand"><img src="img/brand-white.png" alt="logo" class="img-fluid" width="80px" height="100px"></a>
+        <a href="index.php" class="navbar-brand"><img src="img/PIClogo.png" alt="logo" class="img-fluid" width="40px" height="40px"></a>
 
         <button class="navbar-toggler" data-toggle="collapse" data-target="#responsive"><span class="navbar-toggler-icon"></span></button>
 
@@ -467,7 +467,7 @@ include 'controllers/authController.php';
                             </form>
                         </div>
                            
-                        <?php
+                            <?php
                             $username = $_SESSION['username'];
                             $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT 10";
                             $res = mysqli_query($conn, $sql);
@@ -476,9 +476,29 @@ include 'controllers/authController.php';
                                     ?>
                                         <div class="card-body">
                                             <div class="media">
-                                                <img src="img/avatar-dhg.png" alt="img" width="55px" height="55px" class="rounded-circle mr-3">
+                                            <?php
+                                
+                                $sql = "SELECT profile_pic FROM users WHERE username=?";
+                                $stmt = $conn->prepare($sql); 
+                                $stmt->bind_param('s', $row['username']);
+                                if($stmt->execute())
+                                {
+                                 $result = $stmt->get_result();
+                                          
+                                 $user = mysqli_fetch_array($result);
+                                 
+
+                                 echo '<img src="data:image/jpg;base64,'.base64_encode($user['profile_pic']), 
+                                 '"alt="Profile" width="80px" height="80px" class="rounded-circle center mr-3">';
+                                                  
+                                          
+                                  $stmt->close();
+                                }
+                                          
+                  
+                                ?>
                                                 <div class="media-body">
-                                                    <h5><?php echo $username; ?></h5>
+                                                    <h5><?php echo $row['username']; ?></h5>
                                                     <p class="card-text text-justify"><?php echo $row['post_summary']; ?></p>
                                                     <div class="row no-gutters mb-3">
                                                         <div class="col-6 p-1 text-center">
@@ -645,6 +665,8 @@ include 'controllers/authController.php';
             
                 
             });
+
+            
             });
             
     
